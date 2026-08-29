@@ -230,7 +230,20 @@ def health():
 
 @app.get("/")
 def home():
-    return render_template("store.html", products=Product.query.filter_by(active=True).order_by(Product.id.desc()).all())
+    rows = Product.query.filter_by(active=True).order_by(Product.id.desc()).all()
+
+    products = [{
+        "id": p.id,
+        "name": p.name,
+        "category": p.category,
+        "description": p.description or "",
+        "price": float(p.price),
+        "old_price": float(p.old_price) if p.old_price is not None else None,
+        "image": p.image or "📦",
+        "stock": p.stock,
+    } for p in rows]
+
+    return render_template("store.html", products=products)
 
 @app.post("/api/orders")
 @limiter.limit("30 per hour")
