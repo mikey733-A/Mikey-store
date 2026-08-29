@@ -40,3 +40,4 @@ databases:
   - name: mikey-store-db
     databaseName: mikey_store
     user: mikey_store
+    play: free 
